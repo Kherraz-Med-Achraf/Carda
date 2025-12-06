@@ -1,0 +1,79 @@
+@use 'sass:map';
+
+// Police principale
+$font-family-base: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+// Presets issus du style guide
+// Text Preset 1 – Bold
+// Desktop: 40px, LH 120%
+// (les variantes tablette/mobile pourront être gérées via media queries)
+$text-presets: (
+  'text-1': (
+    size: 40px,
+    line-height: 120%,
+    weight: 700,
+    letter-spacing: 0
+  ),
+  'text-2': (
+    size: 24px,
+    line-height: 120%,
+    weight: 600,
+    letter-spacing: 0
+  ),
+  'text-3': (
+    size: 20px,
+    line-height: 120%,
+    weight: 600,
+    letter-spacing: 0
+  ),
+  'text-4-semibold': (
+    size: 16px,
+    line-height: 120%,
+    weight: 600,
+    letter-spacing: 0
+  ),
+  'text-4-regular': (
+    size: 16px,
+    line-height: 140%,
+    weight: 400,
+    letter-spacing: 0
+  ),
+  'text-5-medium': (
+    size: 14px,
+    line-height: 140%,
+    weight: 500,
+    letter-spacing: 0
+  ),
+  'text-5-regular': (
+    size: 14px,
+    line-height: 140%,
+    weight: 400,
+    letter-spacing: 0
+  ),
+  'text-6': (
+    size: 12px,
+    line-height: 130%,
+    weight: 500,
+    letter-spacing: -3%
+  )
+);
+
+@mixin text-preset($name) {
+  $config: map.get($text-presets, $name);
+
+  @if $config == null {
+    @error 'Text preset "#{$name}" introuvable.';
+  }
+
+  font-family: $font-family-base;
+  font-size: map.get($config, size);
+  line-height: map.get($config, line-height);
+  font-weight: map.get($config, weight);
+
+  $letter-spacing: map.get($config, letter-spacing);
+  @if $letter-spacing != 0 {
+    letter-spacing: $letter-spacing;
+  }
+}
+
+
