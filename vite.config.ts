@@ -15,10 +15,10 @@ export default defineConfig({
       scss: {
         // Rend les tokens du design system disponibles dans TOUS
         // les fichiers SCSS, sans avoir besoin de les importer.
-        // On utilise "styles/..." + includePaths pour que Sass
+        // On utilise "styles/..." + loadPaths pour que Sass
         // résolve correctement depuis n'importe quel dossier.
         additionalData: '@use "styles/tokens" as *;\n',
-        includePaths: ['src'],
+        loadPaths: ['src'],
       },
     },
   },
