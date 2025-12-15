@@ -61,7 +61,7 @@ export function Flashcard({
           </div>
           <div className={styles.checklist}>
             <input type="checkbox" id="checklist" name="checklist" />
-            <label htmlFor="checklist">Checklist</label>
+            <label htmlFor="checklist">Hide Mastered</label>
           </div>
         </div>
         <div className={styles.right}>

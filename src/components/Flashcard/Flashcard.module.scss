@@ -1,7 +1,6 @@
 .card {
   background-color: $color-neutral-0;
   border-radius: $radius-16;
-  padding: $spacing-150 $spacing-200 $spacing-200 $spacing-200;
   min-height: 300px;
   display: flex;
   flex-direction: column;
@@ -12,7 +11,8 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  border-bottom: 1px solid $color-neutral-900;
+  padding:  $spacing-150 $spacing-200;
   .right button {
     @include button-preset("border");
     @include text-preset("text-4-medium");
@@ -57,7 +57,7 @@
         background-color: $color-neutral-0;
         border: 1px solid $color-neutral-900;
         border-radius: $radius-8;
-        
+
         z-index: 10;
         box-shadow: $shadow-soft;
         display: flex;
@@ -98,9 +98,23 @@
           &:not(:last-child) {
             border-bottom: 1px solid $color-neutral-900;
           }
-
-          
         }
+      }
+    }
+    .checklist {
+      display: flex;
+      align-items: center;
+      gap: $spacing-100;
+      @include text-preset("text-4-medium");
+      color: $color-neutral-900;
+      cursor: pointer;
+      input[type="checkbox"] {
+        width: 16px;
+        height: 16px;
+        accent-color: $color-neutral-900;
+        border: 1px solid $color-neutral-900;
+        border-radius: $radius-4;
+        cursor: pointer;
       }
     }
   }
