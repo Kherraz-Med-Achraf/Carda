@@ -1,4 +1,5 @@
-import { useId, useLayoutEffect, useRef, useState } from "react";
+import { useId, useLayoutEffect, useRef } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import styles from "./Header.module.scss";
 
 import logoSmall from "../../assets/images/logo-small.svg";
@@ -6,25 +7,38 @@ import logoLarge from "../../assets/images/logo-large.svg";
 import gsap from "gsap";
 
 
+
 export function Header() {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const isAllCards = location.pathname === "/all-cards";
+
+  const toggle = () => {
+    if (isAllCards) {
+      navigate("/");
+    } else {
+      navigate("/all-cards");
+    }
+  };
 
   const switchId = useId();
-  const [internalChecked, setInternalChecked] = useState(false);
   const switchRef = useRef<HTMLButtonElement | null>(null);
   const trackRef = useRef<HTMLSpanElement | null>(null);
-  const checkedRef = useRef(internalChecked);
-  checkedRef.current = internalChecked;
-  const responsiveWidth : boolean = window.innerWidth < 768 ? true : false;
 
+  // Animation du track du switch
   const positionTrack = (checked: boolean, animate: boolean) => {
     const btn = switchRef.current;
     const track = trackRef.current;
     if (!btn || !track) return;
 
+    // Calculer le breakpoint responsive au moment de l'exécution
+    const isMobile = window.innerWidth < 768;
+
     // NOTE: valeurs en px à garder cohérentes avec `Header.module.scss`
     const inset = 4; // padding interne + offset left
-    const leftWidth = responsiveWidth ? 121 : 129;
-    const rightWidth = responsiveWidth ? 98 : 114;
+    const leftWidth = isMobile ? 121 : 129;
+    const rightWidth = isMobile ? 98 : 114;
 
     const width = checked ? rightWidth : leftWidth;
     const x = checked ? Math.max(0, btn.clientWidth - width - inset * 2) : 0;
@@ -44,25 +58,32 @@ export function Header() {
     });
   };
 
-  const toggle = () => {
-    const next = !internalChecked;
-    setInternalChecked(next);
-  };
-
   useLayoutEffect(() => {
-    // Positionnement initial (sans animation)
-    positionTrack(checkedRef.current, false);
+    // Observer les changements de taille du bouton
+    const btn = switchRef.current;
+    if (!btn) return;
 
-    const onResize = () => positionTrack(checkedRef.current, false);
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
+    const observer = new ResizeObserver(() => {
+      // Pour éviter les problèmes de stale closure sans recréer l'observer,
+      // on lit l'état directement depuis l'attribut aria-checked du DOM.
+      const isChecked = btn.getAttribute("aria-checked") === "true";
+      
+      // Recalcule la position quand la taille change (sans animation)
+      positionTrack(isChecked, false);
+    });
+
+    observer.observe(btn);
+
+    // Nettoyage
+    return () => observer.disconnect();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useLayoutEffect(() => {
-    positionTrack(internalChecked, true);
+    // Animation lors du changement d'état (clic)
+    positionTrack(isAllCards, true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [internalChecked]);
+  }, [isAllCards]);
 
   return (
     <header className={styles.header}>
@@ -80,7 +101,7 @@ export function Header() {
           className={styles.switch}
           ref={switchRef}
           role="switch"
-          aria-checked={internalChecked}
+          aria-checked={isAllCards}
           aria-label="Basculer entre Study Mode et All Cards"
           onClick={toggle}
         >
