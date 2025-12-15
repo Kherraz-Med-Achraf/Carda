@@ -1,17 +1,107 @@
 .card {
-  background-color: white;
-  border-radius: 1rem;
-  padding: 2rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: $color-neutral-0;
+  border-radius: $radius-16;
+  padding: $spacing-150 $spacing-200 $spacing-200 $spacing-200;
   min-height: 300px;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: transform 0.2s;
-
-  &:hover {
-    transform: translateY(-2px);
-  }
 }
 
+.cardHeader {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  .right button {
+    @include button-preset("border");
+    @include text-preset("text-4-medium");
+    display: flex;
+    align-items: center;
+    gap: $spacing-100;
+  }
+  .left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: $spacing-100;
+    .dropdownContainer {
+      position: relative;
+
+      .dropdownTrigger {
+        @include button-preset("border");
+        @include text-preset("text-4-medium");
+        display: flex;
+        align-items: center;
+        gap: $spacing-100;
+        cursor: pointer;
+        background-color: $color-neutral-0;
+
+        img {
+          transition: transform 0.2s ease;
+          &.rotate {
+            transform: rotate(180deg);
+          }
+        }
+        &:focus {
+          outline: none;
+          box-shadow: none;
+        }
+      }
+
+      .dropdownMenu {
+        position: absolute;
+        top: calc(100% + $spacing-100);
+        left: 0;
+        min-width: 200px;
+        background-color: $color-neutral-0;
+        border: 1px solid $color-neutral-900;
+        border-radius: $radius-8;
+        
+        z-index: 10;
+        box-shadow: $shadow-soft;
+        display: flex;
+        flex-direction: column;
+
+        .dropdownItem {
+          display: flex;
+          align-items: center;
+          gap: $spacing-100;
+          padding: $spacing-100 $spacing-200;
+          cursor: pointer;
+          @include text-preset("text-4-medium");
+          color: $color-neutral-900;
+          transition: background-color 0.2s ease;
+
+          &:hover {
+            background-color: $color-neutral-100;
+          }
+
+          input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: $color-neutral-900;
+            border: 1px solid $color-neutral-900;
+            border-radius: $radius-4;
+            cursor: pointer;
+          }
+
+          &:first-child {
+            border-top-left-radius: $radius-8;
+            border-top-right-radius: $radius-8;
+          }
+          &:last-child {
+            border-bottom-left-radius: $radius-8;
+            border-bottom-right-radius: $radius-8;
+          }
+
+          &:not(:last-child) {
+            border-bottom: 1px solid $color-neutral-900;
+          }
+
+          
+        }
+      }
+    }
+  }
+}

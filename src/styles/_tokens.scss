@@ -1,6 +1,35 @@
-@forward 'colors';
-@forward 'spacing';
-@forward 'radius';
-@forward 'typography';
+@forward "colors";
+@forward "spacing";
+@forward "radius";
+@forward "typography";
 
+@use "colors" as *;
+@use "spacing" as *;
+@use "radius" as *;
 
+//mixin for a button primary and alternate
+@mixin button-preset($preset) {
+  @if $preset == "border" {
+    cursor: pointer;
+    background-color: $color-neutral-0;
+    color: $color-neutral-900;
+    border: 1px solid $color-neutral-900;
+    border-radius: $radius-full;
+    padding: $spacing-150 $spacing-200;
+    transition: all 0.3s ease;
+    &:hover {
+      background-color: $color-neutral-100;
+    }
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px $color-neutral-0, 0 0 0 4px $color-blue-600;
+    }
+  }
+  @if $preset == "alternate" {
+    background-color: $color-neutral-900;
+    color: $color-neutral-0;
+    border: 1px solid $color-neutral-0;
+    border-radius: $radius-16;
+    padding: $spacing-150 $spacing-200;
+  }
+}
